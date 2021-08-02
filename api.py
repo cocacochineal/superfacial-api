@@ -66,13 +66,40 @@ def something(image: bytes=File(...)):
        -0.02829835,  0.05815861,  0.00882281])
     image_object = io.BytesIO(image)
     image_to_test = face_recognition.load_image_file(image_object)
-    
-    image_to_test_encoding = face_recognition.face_encodings(image_to_test)[0]
-    face_distances = face_recognition.face_distance([avg], image_to_test_encoding)
-    if face_distances[0]<0.60:
-        return 'Match!🍆🍆🍑'
-    else:
-        return 'forever alone 😢'
-    
+    face_landmarks_list = face_recognition.face_landmarks(image_to_test)
+    image_to_test_encoding = face_recognition.face_encodings(image_to_test)
+    results=[]
+    for encode in image_to_test_encoding:
+        face_distances = face_recognition.face_distance([avg], encode)
+        if face_distances[0]<0.55:
+            results.append(1)
+        else:
+            results.append(0)   
+    # pil_image=Image.open(image_object)
+    # d = ImageDraw.Draw(pil_image)
+    #
+    # for face_landmarks in face_landmarks_list:
+    #     # Print the location of each facial feature in this image
+    #     for facial_feature in face_landmarks.keys():
+    #         print('The {} in this face has the following points: {}'.format(facial_feature, face_landmarks[facial_feature]))
+    #     # Let’s trace out each facial feature in the image with a line!
+    #     for facial_feature in face_landmarks.keys():
+    #         d.line(face_landmarks[facial_feature], width=3)
+    # i=0
+    # for i in range(0,len(face_landmarks_list)):
+    #     txt =results[i]
+    #     osd = Image.new("RGB", (100,25), "skyblue")
+    #     dctx = ImageDraw.Draw(osd)  # create drawing context
+    #     dctx.text((5, 5), txt,  fill="black") 
+    #     x=face_landmarks_list[i]['left_eyebrow'] 
+    #     (a,b)=[sum(y) / len(y) for y in zip(*x)]
+    #     a=int(a)
+    #     b=int(b)-50
+    #     pil_image.paste(
+    #     osd,
+    #     box=(a, b, osd.size[0] + a, osd.size[1] + b),
+    #     mask=Image.new("L", osd.size, 192))
+    #     i+=1
+    return [results, face_landmarks_list]
 if __name__ == "__main__":
     uvicorn.run(app, host='0.0.0.0', port=8888)
