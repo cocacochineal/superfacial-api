@@ -70,9 +70,9 @@ def something(image: bytes=File(...)):
     image_to_test_encoding = face_recognition.face_encodings(image_to_test)[0]
     face_distances = face_recognition.face_distance([avg], image_to_test_encoding)
     if face_distances[0]<0.60:
-        return 'Match!'
+        return 'Match!🍆🍆🍑'
     else:
-        return 'not a match'
+        return 'forever alone 😢'
     
 if __name__ == "__main__":
     uvicorn.run(app, host='0.0.0.0', port=8888)
