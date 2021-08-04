@@ -8,27 +8,27 @@ import face_recognition
 import uvicorn
 import io
 
-# #Sequential model.
-# from keras.models import Sequential
-# from keras.layers import Activation, Dense
-# #Getting necessary layers.
-# from keras.layers import Conv2D             #Two-dimensional convolution layer.
-# from keras.layers import MaxPooling2D       #Two-dimensional pooling layer.
-# from keras.layers import Flatten            #Flattening layer.
-# from keras.layers import Dropout            #Regularization to prevent overfitting.
-# #Image preprocessing.
-# from keras.preprocessing.image import ImageDataGenerator
-# from keras.preprocessing import image
-# #Operating system interface.
-# import os
-# #Plotting library.
-# import matplotlib.pyplot as plt
-# #Other libraries.
-# import numpy as np
-# import random
-# import PIL
-# import pandas as pd
-# from sklearn.model_selection import train_test_split
+#Sequential model.
+from keras.models import Sequential
+from keras.layers import Activation, Dense
+#Getting necessary layers.
+from keras.layers import Conv2D             #Two-dimensional convolution layer.
+from keras.layers import MaxPooling2D       #Two-dimensional pooling layer.
+from keras.layers import Flatten            #Flattening layer.
+from keras.layers import Dropout            #Regularization to prevent overfitting.
+#Image preprocessing.
+from keras.preprocessing.image import ImageDataGenerator
+from keras.preprocessing import image
+#Operating system interface.
+import os
+#Plotting library.
+import matplotlib.pyplot as plt
+#Other libraries.
+import numpy as np
+import random
+import PIL
+import pandas as pd
+from sklearn.model_selection import train_test_split
 
 
 # class Item(BaseModel):
