@@ -1,1 +1,1 @@
-web: sh setup.sh && python setup.py install && uvicorn run api.py
+web: sh setup.sh && python setup.py install && uvicorn api:app --reload  
