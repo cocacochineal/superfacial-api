@@ -55,14 +55,73 @@ app.add_middleware(
 @app.post('/form')
 async def create_item(options_: list = Form(...)):
     #options_object = io.BytesIO(options)
+    options_ = [0 if option=='0.0' else 1 for option in options_]
+    num_faces={1: 20,
+    2: 20,
+    3: 20,
+    4: 19,
+    5: 20,
+    6: 20,
+    7: 20,
+    8: 19,
+    9: 20,
+    10: 20,
+    11: 19,
+    12: 19,
+    13: 20,
+    14: 20,
+    15: 20,
+    16: 19,
+    17: 19,
+    18: 20,
+    19: 18,
+    20: 20,
+    21: 20,
+    22: 20,
+    23: 20,
+    24: 20,
+    25: 20,
+    26: 20,
+    27: 20,
+    28: 19,
+    29: 19,
+    30: 20,
+    31: 17,
+    32: 20,
+    33: 20,
+    34: 19,
+    35: 20,
+    36: 20,
+    37: 20,
+    38: 20,
+    39: 19,
+    40: 18,
+    41: 20,
+    42: 19,
+    43: 20,
+    44: 20,
+    45: 20,
+    46: 20,
+    47: 18,
+    48: 9,
+    49: 19,
+    50: 20,
+    51: 19,
+    52: 19}
+    
     print(options_)
     global options
     options = options_
-    #print(options_object)
+    global y
+    y=[]
+    for i in range(1,53):
+        for item in num_faces[i]*[options[i-1]]:
+            y.append(item)
+    print(y)
       
 
     #print(int.from_bytes(options,"big"))
-    return options_
+    return y
 
 @app.post("/image/")
 # def cnn(image: bytes=File(...)):
@@ -85,7 +144,7 @@ async def create_item(options_: list = Form(...)):
 #     return model        
 
 def something(image: bytes=File(...)):
-    print(len(options))
+    print(len(y))
     # i=1
     # like_encode=[]
     # for option in options:
