@@ -9,20 +9,20 @@ import uvicorn
 import io
 
 #Sequential model.
-from keras.models import Sequential
-from keras.layers import Activation, Dense
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Activation, Dense
 #Getting necessary layers.
-from keras.layers import Conv2D             #Two-dimensional convolution layer.
-from keras.layers import MaxPooling2D       #Two-dimensional pooling layer.
-from keras.layers import Flatten            #Flattening layer.
-from keras.layers import Dropout            #Regularization to prevent overfitting.
+from tensorflow.keras.layers import Conv2D             #Two-dimensional convolution layer.
+from tensorflow.keras.layers import MaxPooling2D       #Two-dimensional pooling layer.
+from tensorflow.keras.layers import Flatten            #Flattening layer.
+from tensorflow.keras.layers import Dropout            #Regularization to prevent overfitting.
 #Image preprocessing.
-from keras.preprocessing.image import ImageDataGenerator
-from keras.preprocessing import image
-#Operating system interface.
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.preprocessing import image
+# #Operating system interface.
 import os
 #Plotting library.
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 #Other libraries.
 import numpy as np
 import random
@@ -49,7 +49,9 @@ app.add_middleware(
     allow_headers=["*"],  # Allows all headers
 )
 
-
+@app.get('/')
+def root():
+    return {'greeting': 'Hello from Shan'}
 
 
 @app.post('/form')
