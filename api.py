@@ -12,35 +12,14 @@ import pickle
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Activation, Dense
 #Getting necessary layers.
-from tensorflow.keras.layers import Conv2D             #Two-dimensional convolution layer.
-from tensorflow.keras.layers import MaxPooling2D       #Two-dimensional pooling layer.
-from tensorflow.keras.layers import Flatten            #Flattening layer.
-from tensorflow.keras.layers import Dropout            #Regularization to prevent overfitting.
+from tensorflow.keras.layers import Dropout 
 #Image preprocessing.
-from tensorflow.keras.preprocessing.image import ImageDataGenerator
-from tensorflow.keras.preprocessing import image
-# #Operating system interface.
 import os
-#Plotting library.
-#import matplotlib.pyplot as plt
-#Other libraries.
-import numpy as np
 import random
-import PIL
-from sklearn.model_selection import train_test_split
 from tensorflow.keras import regularizers
 from tensorflow.keras.callbacks import EarlyStopping
 
-
-# class Item(BaseModel):
-#     name: str
-#     description: Optional[str] = None
-#     price: float
-#     tax: Optional[float] = None
-
 app = FastAPI()
-
-
 
 app.add_middleware(
     CORSMiddleware,
