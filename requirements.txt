@@ -10,7 +10,7 @@ numpy
 pandas
 keras
 scikit-learn
-tensorflow-cpu==2.1.0
+tensorflow-cpu
 keras
 fastapi
 Pillow
