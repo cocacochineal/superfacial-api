@@ -183,3 +183,58 @@ def something(image: bytes=File(...)):
     return list((results, face_landmarks_list))
     # if __name__ == "__main__":
     #     uvicorn.run(app, host='0.0.0.0', port=8888)
+    
+@app.get("/wagon/")
+def wagon():
+    global y
+    print(y)
+    # i=1
+    # like_encode=[]
+    # for option in options:
+    #     if option!='0.0':
+    #         like_encode.append(face_recognition.face_encodings(face_recognition.load_image_file(f"/Users/shan/Desktop/interface_face/{i}.jpg"))[0])
+    #     i+=1
+    # avg = sum(like_encode)/len(like_encode)
+    wagon_encoding = pickle.load(open('wagon', 'rb'))
+    face_landmarks_list=pickle.load(open('landmarks','rb'))
+    es = EarlyStopping(patience=3)
+    reg_l1 = regularizers.L1(0.01)
+    reg_l2 = regularizers.L2(0.01)
+    
+    global model
+    def initialize_model():
+        model = Sequential()
+        model.add(Dense(units = 128, input_dim = 128, activation = 'relu'))
+        model.add(Dropout(0.01))
+        model.add(Dense(units = 64, activation = 'relu',
+                        kernel_regularizer=reg_l1))
+        model.add(Dropout(0.2))
+        model.add(Dense(units = 50, activation = 'relu',
+                        kernel_regularizer=reg_l2))
+        model.add(Dropout(0.2))
+        model.add(Dense(units = 1, activation = 'sigmoid'))
+        model.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['accuracy'])
+        return model
+    
+    model = initialize_model()
+    X = pickle.load(open('cele50_encode', 'rb'))
+    y = np.array(y)
+    print(X.shape)
+    print(y.shape)
+    # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    history = model.fit(X, y, epochs=30, batch_size=32, verbose=1, shuffle=True, callbacks=[es])    
+    results=[]
+    for encode in wagon_encoding:
+        #face_distances = face_recognition.face_distance([avg], encode)
+        prediction=model.predict(encode.reshape(1,128))[0][0]
+        # if face_distances[0]<0.55:
+        #     results.append(1)
+        # else:
+        #     results.append(0)   
+        results.append(float(prediction))
+    print(results)
+    #return results
+    #print(face_landmarks_list)
+    return list((results, face_landmarks_list))
+    # if __name__ == "__main__":
+    #     uvicorn.run(app, host='0.0.0.0', port=8888)

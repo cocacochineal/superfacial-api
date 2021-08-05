@@ -16,8 +16,8 @@ face_recognition
 uvicorn
 python-multipart
 
-h5py~=3.1.0
-six~=1.15.0
+h5py==3.1.0
+six==1.15.0
 
 joblib
 memoized-property
