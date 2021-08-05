@@ -7,7 +7,7 @@ from PIL import Image
 import face_recognition
 import uvicorn
 import io
-
+import pickle
 #Sequential model.
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Activation, Dense
@@ -111,23 +111,21 @@ async def create_item(options_: list = Form(...)):
     52: 19}
     
     print(options_)
-    global options
-    options = options_
+    # global options
+    # options = options_
     global y
     y=[]
     for i in range(1,53):
-        for item in num_faces[i]*[options[i-1]]:
+        for item in num_faces[i]*[options_[i-1]]:
             y.append(item)
-    print(y)
-      
-
-    #print(int.from_bytes(options,"big"))
+    #y=np.array(y)
+   #print(int.from_bytes(options,"big"))
     return y
 
 @app.post("/image/")
-
 def something(image: bytes=File(...)):
-    print(len(y))
+    global y
+    print(y)
     # i=1
     # like_encode=[]
     # for option in options:
@@ -158,20 +156,24 @@ def something(image: bytes=File(...)):
                 optimizer='adam',
                 metrics=['accuracy'])     
     X = pickle.load(open('cele50_encode', 'rb'))
+    y = np.array(y)
+    print(X.shape)
+    print(y.shape)
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
     history = model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=30, batch_size=32, verbose=1, shuffle=True)
-    print(model.evaluate(X_test_y, y_test_y, verbose=0))
+    print(model.evaluate(X_test, y_test, verbose=0))
     
     results=[]
     for encode in image_to_test_encoding:
         #face_distances = face_recognition.face_distance([avg], encode)
-        prediction=model.predict(encode)[0]
+        prediction=model.predict(encode.reshape(1,128))[0][0]
         # if face_distances[0]<0.55:
         #     results.append(1)
         # else:
         #     results.append(0)   
         results.append(prediction)
     print(results)
-    return [results, face_landmarks_list]
-    if __name__ == "__main__":
-        uvicorn.run(app, host='0.0.0.0', port=8888)
+    print(face_landmarks_list)
+    return list((results, face_landmarks_list))
+    # if __name__ == "__main__":
+    #     uvicorn.run(app, host='0.0.0.0', port=8888)
