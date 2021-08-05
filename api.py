@@ -54,7 +54,7 @@ app.add_middleware(
 
 @app.post('/form')
 async def create_item(options_: list = Form(...)):
-    #options_object = io.BytesIO(options)
+    print(options_)
     options_ = [0 if option=='0.0' else 1 for option in options_]
     num_faces={1: 20,
     2: 20,
