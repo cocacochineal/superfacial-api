@@ -9,6 +9,7 @@ import uvicorn
 import io
 
 #Sequential model.
+from tensorflow import keras
 from keras.models import Sequential
 from keras.layers import Activation, Dense
 #Getting necessary layers.

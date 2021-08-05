@@ -7,8 +7,10 @@ wheel>=0.29
 # data science
 # cmake
 numpy
-# pandas
-# scikit-learn
+pandas
+keras
+scikit-learn
+keras
 fastapi
 Pillow
 face_recognition
