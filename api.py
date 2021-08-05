@@ -27,7 +27,6 @@ import os
 import numpy as np
 import random
 import PIL
-import pandas as pd
 from sklearn.model_selection import train_test_split
 
 
@@ -126,8 +125,6 @@ async def create_item(options_: list = Form(...)):
     return y
 
 @app.post("/image/")
-# def cnn(image: bytes=File(...)):
-#     
 
 def something(image: bytes=File(...)):
     print(len(y))
@@ -159,9 +156,7 @@ def something(image: bytes=File(...)):
     model = initialize_model()
     model.compile(loss='binary_crossentropy',
                 optimizer='adam',
-                metrics=['accuracy'])
-    
-    return model     
+                metrics=['accuracy'])     
     X = pickle.load(open('cele50_encode', 'rb'))
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
     history = model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=30, batch_size=32, verbose=1, shuffle=True)
