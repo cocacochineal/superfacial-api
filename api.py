@@ -28,6 +28,8 @@ import numpy as np
 import random
 import PIL
 from sklearn.model_selection import train_test_split
+from tensorflow.keras import regularizers
+from tensorflow.keras.callbacks import EarlyStopping
 
 
 # class Item(BaseModel):
@@ -139,30 +141,33 @@ def something(image: bytes=File(...)):
     face_landmarks_list = face_recognition.face_landmarks(image_to_test)
     image_to_test_encoding = face_recognition.face_encodings(image_to_test)
     
+    
+    es = EarlyStopping(patience=3)
+    reg_l1 = regularizers.L1(0.01)
+    reg_l2 = regularizers.L2(0.01)
+    
     global model
     def initialize_model():
         model = Sequential()
-        #model.add(Conv2D(32, (3, 3), input_shape = (64, 64, 3), activation = 'relu'))
-        #model.add(MaxPooling2D(pool_size = (2, 2)))
-        #model.add(Flatten())
         model.add(Dense(units = 128, input_dim = 128, activation = 'relu'))
-        model.add(Dense(units = 64, activation = 'relu'))
-        model.add(Dense(units = 100, activation = 'sigmoid'))
+        model.add(Dropout(0.01))
+        model.add(Dense(units = 64, activation = 'relu',
+                        kernel_regularizer=reg_l1))
+        model.add(Dropout(0.2))
+        model.add(Dense(units = 50, activation = 'relu',
+                        kernel_regularizer=reg_l2))
+        model.add(Dropout(0.2))
         model.add(Dense(units = 1, activation = 'sigmoid'))
         model.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['accuracy'])
         return model
+    
     model = initialize_model()
-    model.compile(loss='binary_crossentropy',
-                optimizer='adam',
-                metrics=['accuracy'])     
     X = pickle.load(open('cele50_encode', 'rb'))
     y = np.array(y)
     print(X.shape)
     print(y.shape)
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-    history = model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=30, batch_size=32, verbose=1, shuffle=True)
-    print(model.evaluate(X_test, y_test, verbose=0))
-    
+    # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    history = model.fit(X, y, epochs=30, batch_size=32, verbose=1, shuffle=True, callbacks=[es])    
     results=[]
     for encode in image_to_test_encoding:
         #face_distances = face_recognition.face_distance([avg], encode)
@@ -171,9 +176,10 @@ def something(image: bytes=File(...)):
         #     results.append(1)
         # else:
         #     results.append(0)   
-        results.append(prediction)
+        results.append(float(prediction))
     print(results)
-    print(face_landmarks_list)
+    #return results
+    #print(face_landmarks_list)
     return list((results, face_landmarks_list))
     # if __name__ == "__main__":
     #     uvicorn.run(app, host='0.0.0.0', port=8888)
