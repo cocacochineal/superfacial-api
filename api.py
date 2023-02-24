@@ -215,5 +215,5 @@ def wagon():
     #return results
     #print(face_landmarks_list)
     return list((results, face_landmarks_list))
-    # if __name__ == "__main__":
-    #     uvicorn.run(app, host='0.0.0.0', port=8888)
+if __name__ == "__main__":
+    uvicorn.run(app, host='0.0.0.0', port=8005)
