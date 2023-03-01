@@ -174,8 +174,11 @@ def wagon():
     #         like_encode.append(face_recognition.face_encodings(face_recognition.load_image_file(f"/Users/shan/Desktop/interface_face/{i}.jpg"))[0])
     #     i+=1
     # avg = sum(like_encode)/len(like_encode)
-    wagon_encoding = pickle.load(open('wagon', 'rb'))
-    face_landmarks_list=pickle.load(open('landmarks','rb'))
+    image_object = io.BytesIO('./tupian.png')
+    image_to_test = face_recognition.load_image_file(image_object)
+    face_landmarks_list = face_recognition.face_landmarks(image_to_test)
+    wagon_encoding = face_recognition.face_encodings(image_to_test)
+    
     es = EarlyStopping(patience=3)
     reg_l1 = regularizers.L1(0.01)
     reg_l2 = regularizers.L2(0.01)
@@ -212,7 +215,7 @@ def wagon():
         #     results.append(0)   
         results.append(float(prediction))
     print(results)
-    #return results
+    #return results      
     #print(face_landmarks_list)
     return list((results, face_landmarks_list))
 if __name__ == "__main__":
